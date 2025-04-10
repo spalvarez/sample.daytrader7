@@ -82,7 +82,7 @@ public class DTBroker3MDB implements MessageListener {
             }
             if (command.equalsIgnoreCase("neworder")) {
                 /* Get the Order ID and complete the Order */
-                Integer orderID = new Integer(message.getIntProperty("orderID"));
+                Integer orderID = Integer.valueOf(message.getIntProperty("orderID"));
                 boolean twoPhase = message.getBooleanProperty("twoPhase");
                 boolean direct = message.getBooleanProperty("direct");
                 long publishTime = message.getLongProperty("publishTime");

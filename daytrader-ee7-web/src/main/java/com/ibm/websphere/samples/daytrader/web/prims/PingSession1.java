@@ -85,7 +85,7 @@ public class PingSession1 extends HttpServlet {
             Integer ival = (Integer) session.getAttribute("sessiontest.counter");
             // if their is not a counter create one.
             if (ival == null) {
-                ival = new Integer(count++);
+                ival = Integer.valueOf(count++);
                 session.setAttribute("sessiontest.counter", ival);
             }
             String SessionID = "SessionID:" + ival.toString();

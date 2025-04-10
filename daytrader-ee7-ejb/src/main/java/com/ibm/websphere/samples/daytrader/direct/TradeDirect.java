@@ -204,7 +204,7 @@ public class TradeDirect implements TradeServices {
 
         try {
             if (Log.doTrace()) {
-                Log.trace("TradeDirect:buy - inSession(" + this.inSession + ")", userID, symbol, new Double(quantity));
+                Log.trace("TradeDirect:buy - inSession(" + this.inSession + ")", userID, symbol, Double.valueOf(quantity));
             }
 
             if (!inSession && orderProcessingMode == TradeConfig.ASYNCH_2PHASE) {
@@ -490,7 +490,7 @@ public class TradeDirect implements TradeServices {
          * accountData = getAccountData(accountID, conn); QuoteDataBean
          * quoteData = getQuoteData(conn, quoteID);
          */
-        String userID = getAccountProfileData(conn, new Integer(accountID)).getUserID();
+        String userID = getAccountProfileData(conn, Integer.valueOf(accountID)).getUserID();
 
         HoldingDataBean holdingData = null;
 
@@ -979,7 +979,7 @@ public class TradeDirect implements TradeServices {
         Connection conn = null;
         try {
             if (Log.doTrace()) {
-                Log.trace("TradeDirect:getAccountData - inSession(" + this.inSession + ")", new Integer(accountID));
+                Log.trace("TradeDirect:getAccountData - inSession(" + this.inSession + ")", Integer.valueOf(accountID));
             }
 
             conn = getConn();
@@ -1313,7 +1313,7 @@ public class TradeDirect implements TradeServices {
 
         try {
             if (Log.doTrace()) {
-                Log.trace("TradeDirect:updateQuotePriceVolume - inSession(" + this.inSession + ")", symbol, changeFactor, new Double(sharesTraded));
+                Log.trace("TradeDirect:updateQuotePriceVolume - inSession(" + this.inSession + ")", symbol, changeFactor, Double.valueOf(sharesTraded));
             }
 
             conn = getConn();
@@ -1551,7 +1551,7 @@ public class TradeDirect implements TradeServices {
         if (!rs.next()) {
             Log.error("TradeDirect:getAccountDataFromResultSet -- cannot find account data");
         } else {
-            accountData = new AccountDataBean(new Integer(rs.getInt("accountID")), rs.getInt("loginCount"), rs.getInt("logoutCount"),
+            accountData = new AccountDataBean(Integer.valueOf(rs.getInt("accountID")), rs.getInt("loginCount"), rs.getInt("logoutCount"),
                     rs.getTimestamp("lastLogin"), rs.getTimestamp("creationDate"), rs.getBigDecimal("balance"), rs.getBigDecimal("openBalance"),
                     rs.getString("profile_userID"));
         }
@@ -1574,7 +1574,7 @@ public class TradeDirect implements TradeServices {
     private HoldingDataBean getHoldingDataFromResultSet(ResultSet rs) throws Exception {
         HoldingDataBean holdingData = null;
 
-        holdingData = new HoldingDataBean(new Integer(rs.getInt("holdingID")), rs.getDouble("quantity"), rs.getBigDecimal("purchasePrice"),
+        holdingData = new HoldingDataBean(Integer.valueOf(rs.getInt("holdingID")), rs.getDouble("quantity"), rs.getBigDecimal("purchasePrice"),
                 rs.getTimestamp("purchaseDate"), rs.getString("quote_symbol"));
         return holdingData;
     }
@@ -1590,7 +1590,7 @@ public class TradeDirect implements TradeServices {
     private OrderDataBean getOrderDataFromResultSet(ResultSet rs) throws Exception {
         OrderDataBean orderData = null;
 
-        orderData = new OrderDataBean(new Integer(rs.getInt("orderID")), rs.getString("orderType"), rs.getString("orderStatus"), rs.getTimestamp("openDate"),
+        orderData = new OrderDataBean(Integer.valueOf(rs.getInt("orderID")), rs.getString("orderType"), rs.getString("orderStatus"), rs.getTimestamp("openDate"),
                 rs.getTimestamp("completionDate"), rs.getDouble("quantity"), rs.getBigDecimal("price"), rs.getBigDecimal("orderFee"),
                 rs.getString("quote_symbol"));
         return orderData;
@@ -1873,7 +1873,7 @@ public class TradeDirect implements TradeServices {
      */
     private static int connCount = 0;
 
-    private static Integer lock = new Integer(0);
+    private static final Object lock = new Object();
 
     private Connection getConn() throws Exception {
 

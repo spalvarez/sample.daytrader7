@@ -29,13 +29,13 @@
     <%
         // setup some variables to work with later
         int someint1 = TradeConfig.rndInt(100) + 1;
-        pageContext.setAttribute("someint1", new Integer(someint1));
+        pageContext.setAttribute("someint1", Integer.valueOf(someint1));
         int someint2 = TradeConfig.rndInt(100) + 1;
-        pageContext.setAttribute("someint2", new Integer(someint2));
+        pageContext.setAttribute("someint2", Integer.valueOf(someint2));
         float somefloat1 = TradeConfig.rndFloat(100) + 1.0f;
-        pageContext.setAttribute("somefloat1", new Float(somefloat1));
+        pageContext.setAttribute("somefloat1", Float.valueOf(somefloat1));
         float somefloat2 = TradeConfig.rndFloat(100) + 1.0f;
-        pageContext.setAttribute("somefloat2", new Float(somefloat2));
+        pageContext.setAttribute("somefloat2", Float.valueOf(somefloat2));
 
         QuoteDataBean quoteData1 = QuoteDataBean.getRandomInstance();
         pageContext.setAttribute("quoteData1", quoteData1);

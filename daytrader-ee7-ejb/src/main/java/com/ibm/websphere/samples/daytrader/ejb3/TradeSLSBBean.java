@@ -706,7 +706,7 @@ public class TradeSLSBBean implements TradeSLSBRemote, TradeSLSBLocal {
         public int compare(Object quote1, Object quote2) {
             double change1 = ((QuoteDataBean) quote1).getChange();
             double change2 = ((QuoteDataBean) quote2).getChange();
-            return new Double(change2).compareTo(change1);
+            return Double.valueOf(change2).compareTo(change1);
         }
     }
 

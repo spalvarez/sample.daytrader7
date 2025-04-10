@@ -90,7 +90,7 @@ public class QuoteJSF {
         OrderDataBean orderDataBean;
 
         try {
-            orderDataBean = tradeAction.buy(userID, quoteData.getSymbol(), new Double(this.quantity).doubleValue(), TradeConfig.orderProcessingMode);
+            orderDataBean = tradeAction.buy(userID, quoteData.getSymbol(), Double.valueOf(this.quantity).doubleValue(), TradeConfig.orderProcessingMode);
             OrderData orderData = new OrderData(orderDataBean.getOrderID(), orderDataBean.getOrderStatus(), orderDataBean.getOpenDate(),
                     orderDataBean.getCompletionDate(), orderDataBean.getOrderFee(), orderDataBean.getOrderType(), orderDataBean.getQuantity(),
                     orderDataBean.getSymbol());

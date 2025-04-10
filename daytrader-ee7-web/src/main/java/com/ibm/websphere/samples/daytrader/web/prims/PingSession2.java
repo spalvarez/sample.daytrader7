@@ -82,9 +82,9 @@ public class PingSession2 extends HttpServlet {
             Integer ival = (Integer) session.getAttribute("sessiontest.counter");
             // if there is not a counter then create one.
             if (ival == null) {
-                ival = new Integer(1);
+                ival = Integer.valueOf(1);
             } else {
-                ival = new Integer(ival.intValue() + 1);
+                ival = Integer.valueOf(ival.intValue() + 1);
             }
             session.setAttribute("sessiontest.counter", ival);
             // if the session count is equal to five invalidate the session

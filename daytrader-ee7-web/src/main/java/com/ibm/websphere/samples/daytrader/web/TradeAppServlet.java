@@ -161,7 +161,7 @@ public class TradeAppServlet extends HttpServlet {
             tsAction.doBuy(ctx, req, resp, userID, symbol, quantity);
         } else if (action.equals("sell")) {
             int holdingID = Integer.parseInt(req.getParameter("holdingID"));
-            tsAction.doSell(ctx, req, resp, userID, new Integer(holdingID));
+            tsAction.doSell(ctx, req, resp, userID, Integer.valueOf(holdingID));
         } else if (action.equals("portfolio") || action.equals("portfolioNoEdge")) {
             tsAction.doPortfolio(ctx, req, resp, userID, "Portfolio as of " + new java.util.Date());
         } else if (action.equals("logout")) {

@@ -54,7 +54,7 @@ import com.ibm.websphere.samples.daytrader.util.TradeConfig;
 public class TradeAction implements TradeServices {
 
 	// This lock is used to serialize market summary operations.
-    private static final Integer marketSummaryLock = new Integer(0);
+    private static final Object marketSummaryLock = new Object();
     private static long nextMarketSummary = System.currentTimeMillis();
     private static MarketSummaryDataBean cachedMSDB = MarketSummaryDataBean.getRandomInstance();
         
@@ -251,7 +251,7 @@ public class TradeAction implements TradeServices {
     @Override
     public OrderDataBean buy(String userID, String symbol, double quantity, int orderProcessingMode) throws Exception {
         if (Log.doActionTrace()) {
-            Log.trace("TradeAction:buy", userID, symbol, new Double(quantity), new Integer(orderProcessingMode));
+            Log.trace("TradeAction:buy", userID, symbol, Double.valueOf(quantity), Integer.valueOf(orderProcessingMode));
         }
         OrderDataBean orderData = trade.buy(userID, symbol, quantity, orderProcessingMode);
         
@@ -276,7 +276,7 @@ public class TradeAction implements TradeServices {
      *         order
      */
     public OrderDataBean sell(String userID, int holdingID, int orderProcessingMode) throws Exception {
-        return sell(userID, new Integer(holdingID), orderProcessingMode);
+        return sell(userID, Integer.valueOf(holdingID), orderProcessingMode);
     }
 
     /**
@@ -294,7 +294,7 @@ public class TradeAction implements TradeServices {
     @Override
     public OrderDataBean sell(String userID, Integer holdingID, int orderProcessingMode) throws Exception {
         if (Log.doActionTrace()) {
-            Log.trace("TradeAction:sell", userID, holdingID, new Integer(orderProcessingMode));
+            Log.trace("TradeAction:sell", userID, holdingID, Integer.valueOf(orderProcessingMode));
         }
         OrderDataBean orderData = trade.sell(userID, holdingID, orderProcessingMode);
        
@@ -478,7 +478,7 @@ public class TradeAction implements TradeServices {
     @Override
     public QuoteDataBean updateQuotePriceVolume(String symbol, BigDecimal changeFactor, double sharesTraded) throws Exception {
         if (Log.doActionTrace()) {
-            Log.trace("TradeAction:updateQuotePriceVolume", symbol, changeFactor, new Double(sharesTraded));
+            Log.trace("TradeAction:updateQuotePriceVolume", symbol, changeFactor, Double.valueOf(sharesTraded));
         }
         QuoteDataBean quoteData = null;
         try {

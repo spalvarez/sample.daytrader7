@@ -198,7 +198,7 @@ public class TradeServletAction {
         String results = "";
 
         try {
-            OrderDataBean orderData = tAction.buy(userID, symbol, new Double(quantity).doubleValue(), TradeConfig.orderProcessingMode);
+            OrderDataBean orderData = tAction.buy(userID, symbol, Double.valueOf(quantity).doubleValue(), TradeConfig.orderProcessingMode);
 
             req.setAttribute("orderData", orderData);
             req.setAttribute("results", results);

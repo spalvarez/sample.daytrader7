@@ -99,7 +99,7 @@ public class DTStreamer3MDB implements MessageListener {
                 
                 // Fire message to Websocket Endpoint
                 // Limit Symbols that get sent with percentageToWebSocket (default 5%).
-                int symbolNumber = new Integer(message.getStringProperty("symbol").substring(2));
+                int symbolNumber = Integer.valueOf(message.getStringProperty("symbol").substring(2));
                 
                 if ( symbolNumber < TradeConfig.getMAX_QUOTES() * TradeConfig.getPercentSentToWebsocket() * 0.01) {
                 	jmsEvent.fire(message);

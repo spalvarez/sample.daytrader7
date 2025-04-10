@@ -93,7 +93,7 @@ public class HoldingDataBean implements Serializable {
     }
 
     public static HoldingDataBean getRandomInstance() {
-        return new HoldingDataBean(new Integer(TradeConfig.rndInt(100000)), // holdingID
+        return new HoldingDataBean(Integer.valueOf(TradeConfig.rndInt(100000)), // holdingID
                 TradeConfig.rndQuantity(), // quantity
                 TradeConfig.rndBigDecimal(1000.0f), // purchasePrice
                 new java.util.Date(TradeConfig.rndInt(Integer.MAX_VALUE)), // purchaseDate
