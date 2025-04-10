@@ -1,0 +1,135 @@
+plugins {
+    id 'java'
+    id 'ear'
+    id 'eclipse-wtp'
+    id 'maven-publish'
+    id 'io.openliberty.tools.gradle.Liberty' version '3.9.3' // use latest available
+}
+
+configurations {
+    derbyLibs {
+        canBeResolved = true
+        canBeConsumed = false
+        extendsFrom runtimeOnly
+    }
+}
+
+group = 'net.wasdev.wlp.sample'
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    earlib project(path: ':daytrader-ee7-ejb', configuration: 'archives')
+    earlib project(path: ':daytrader-ee7-web', configuration: 'archives')
+    implementation group: 'org.apache.derby', name: 'derby', version: '10.10.1.1'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+ear {
+    manifest {
+        attributes 'Implementation-Title': 'DayTrader 7'
+    }
+    archiveBaseName.set('daytrader-ee7')
+}
+
+tasks.register('publishEar', Copy) {
+    dependsOn tasks.ear
+    from(tasks.ear)
+    into(file('../daytrader-ee7-wlpcfg/servers/daytrader7Sample/apps'))
+}
+
+tasks.register('copyDerbyLib', Copy) {
+    into file('../daytrader-ee7-wlpcfg/shared/resources/Daytrader7SampleDerbyLibs')
+    from configurations.derbyLibs
+}
+
+tasks.named('assemble') {
+    dependsOn 'publishEar', 'copyDerbyLib'
+}
+
+// Functional Verification Test (FVT) setup
+tasks.register('fvt', Test) {
+    group = 'Verification'
+    description = 'Runs the functional verification tests.'
+
+    dependsOn 'publishEar', 'libertyStart'
+    finalizedBy 'libertyStop'
+
+    include '**/fvt/**'
+    exclude '**/unit/**'
+
+    systemProperties = ['liberty.test.port': getHttpPort()]
+
+    reports {
+        html.outputLocation = file("$buildDir/reports/fvt")
+        junitXml.outputLocation = file("$buildDir/test-results/fvt")
+    }
+}
+
+tasks.named('test') {
+    configure {
+        include '**/unit/**'
+        exclude '**/fvt/**'
+
+        reports {
+            html.outputLocation = file("$buildDir/reports/unit")
+            junitXml.outputLocation = file("$buildDir/test-results/unit")
+        }
+    }
+}
+
+tasks.named('check') {
+    dependsOn 'fvt'
+}
+
+liberty {
+    //installDir = project.hasProperty('libertyRoot') ? file(libertyRoot) : null
+    if (project.hasProperty('libertyRoot')) {
+        installDir = file(libertyRoot)
+    }
+
+    server {
+        name = 'daytrader7Sample'
+        userDir = file('../daytrader-ee7-wlpcfg')
+        clean = true
+
+        install {
+            type = 'openliberty'
+            version = '23.0.0.12'
+        }
+    }
+}
+
+tasks.named('libertyStart') {
+    mustRunAfter 'publishEar'
+}
+
+// Automatically download & install Liberty runtime if not already set
+if (!project.hasProperty('libertyRoot')) {
+    tasks.named('fvt') {
+        dependsOn 'installLiberty'
+    }
+}
+
+// Utility method to get the Liberty server HTTP port
+String getHttpPort() {
+    def DEFAULT_HTTP_PORT = 9082
+    def serverXmlFile = file('../daytrader-ee7-wlpcfg/servers/daytrader7Sample/server.xml')
+    def portPattern = ~/.*httpPort="(\d+)".*/
+    if (serverXmlFile.exists()) {
+        serverXmlFile.eachLine { line ->
+            def matcher = line =~ portPattern
+            if (matcher) {
+                return matcher.group(1)
+            }
+        }
+    }
+    return DEFAULT_HTTP_PORT
+}

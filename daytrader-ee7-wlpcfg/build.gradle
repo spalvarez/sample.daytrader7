@@ -1,0 +1,12 @@
+plugins {
+    id 'base'
+}
+
+tasks.named('clean') {
+    doLast {
+        ant.delete(includeemptydirs: 'true') {
+            fileset(dir: 'servers', includes: '**/logs/**, **/apps/*, **/workarea/**')
+            fileset(dir: 'shared/resources', includes: '**/data/**, **/Daytrader7SampleDerbyLibs/*')
+        }
+    }
+}
