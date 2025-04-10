@@ -35,24 +35,24 @@
 			<fileset dir="${shared.resource.dir}/Daytrader7SampleDerbyLibs" includes="derby.jar"/>
 	</library>
 
-	<dataSource id="TradeDataSource" jndiName="jdbc/TradeDataSource" type="javax.sql.ConnectionPoolDataSource">
+	<!-- <dataSource id="TradeDataSource" jndiName="jdbc/TradeDataSource" type="javax.sql.ConnectionPoolDataSource">
 			<jdbcDriver libraryRef="DerbyLib"/>
 			<properties.derby
 					embedded="true"
 					databaseName="daytraderDB"
 					createDatabase="create"/>
-	</dataSource>
+	</dataSource> -->
 
-	<!-- <jdbcDriver id="DerbyEmbedded" libraryRef="DerbyLib"/>
+	<jdbcDriver id="DerbyEmbedded" libraryRef="DerbyLib"/>
 	<library filesetRef="DerbyFileset" id="DerbyLib"/>
-	<fileset dir="${shared.resource.dir}/Daytrader7SampleDerbyLibs" id="DerbyFileset" includes="derby-10.10.1.1.jar"/> -->
+	<fileset dir="${shared.resource.dir}/Daytrader7SampleDerbyLibs" id="DerbyFileset" includes="derby.jar"/>
 
 	<authData id="TradeDataSourceAuthData" password="db_password" user="db_username"/>
 	<authData id="TradeAdminAuthData" password="db_password" user="db_username"/>
 
-	<!-- <dataSource connectionManagerRef="conMgr1" id="DefaultDataSource" isolationLevel="TRANSACTION_READ_COMMITTED" jdbcDriverRef="DerbyEmbedded" jndiName="jdbc/TradeDataSource" statementCacheSize="60"> 
+	<dataSource connectionManagerRef="conMgr1" id="DefaultDataSource" isolationLevel="TRANSACTION_READ_COMMITTED" jdbcDriverRef="DerbyEmbedded" jndiName="jdbc/TradeDataSource" statementCacheSize="60"> 
 		<properties.derby.embedded createDatabase="create" databaseName="${shared.resource.dir}/data/tradedb" password="db_password" user="db_username"/> 
-	</dataSource> -->
+	</dataSource>
 
 	<messagingEngine id="defaultME">
 		<queue id="TradeBrokerQueue"/>
